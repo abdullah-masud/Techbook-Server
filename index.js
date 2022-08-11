@@ -26,7 +26,7 @@ async function run() {
             res.send(allblogs);
         })
 
-        // GET one part using specific ID
+        // GET one blog using specific ID
         app.get('/allblogs/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
