@@ -16,7 +16,9 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect();
-        const allBlogsCollection = client.db('TechBook').collection('allblogs');
+        const allBlogsCollection = client.db('TechBook').collection('allBlogs');
+        const programmingBlogsCollection = client.db('TechBook').collection('programmingBlogs');
+        const foodBlogsCollection = client.db('TechBook').collection('foodBlogs');
 
         // GET all blogs from DB
         app.get('/allblogs', async (req, res) => {
@@ -33,6 +35,7 @@ async function run() {
             const blog = await allBlogsCollection.findOne(query);
             res.send(blog);
         })
+
 
 
     }
