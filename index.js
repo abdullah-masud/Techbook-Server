@@ -36,6 +36,14 @@ async function run() {
             res.send(blog);
         })
 
+        // GET categorised blog from DB
+        app.get('/categoryblogs', async (req, res) => {
+            const category = req.query.category;
+            const query = { category: category };
+            const cursor = allBlogsCollection.find(query);
+            const categorisedBlogs = await cursor.toArray();
+            res.send(categorisedBlogs)
+        })
 
 
     }
