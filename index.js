@@ -17,8 +17,7 @@ async function run() {
     try {
         await client.connect();
         const allBlogsCollection = client.db('TechBook').collection('allBlogs');
-        const programmingBlogsCollection = client.db('TechBook').collection('programmingBlogs');
-        const foodBlogsCollection = client.db('TechBook').collection('foodBlogs');
+        const usersCollection = client.db('TechBook').collection('users');
 
         // GET all blogs from DB
         app.get('/allblogs', async (req, res) => {
@@ -36,6 +35,13 @@ async function run() {
             res.send(blog);
         })
 
+        // POST Blog in DB
+        app.post('/blog', async (req, res) => {
+            const blog = req.body;
+            const result = await allBlogsCollection.insertOne(blog);
+            res.send(result)
+        })
+
         // GET categorised blog from DB
         app.get('/categoryblogs', async (req, res) => {
             const category = req.query.category;
@@ -43,6 +49,19 @@ async function run() {
             const cursor = allBlogsCollection.find(query);
             const categorisedBlogs = await cursor.toArray();
             res.send(categorisedBlogs)
+        })
+
+        // PUT user in DB
+        app.put('/user/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: user,
+            };
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
         })
 
 
