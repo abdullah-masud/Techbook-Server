@@ -74,10 +74,42 @@ async function run() {
             const filter = { email: email };
             const options = { upsert: true };
             const updateDoc = {
-                $set: user,
+                $set: user
+
             };
             const result = await usersCollection.updateOne(filter, updateDoc, options);
             res.send(result);
+        })
+
+        // PUT user image in DB (update)
+        app.put('/user/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        })
+
+        // GET user from db
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const cursor = usersCollection.find(query);
+            const allUsers = await cursor.toArray();
+            res.send(allUsers);
+        })
+
+        // GET user from db based on email
+        app.get('/userprofile', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const blogs = await usersCollection.find(query).toArray();
+            res.send(blogs);
         })
     }
     finally {
