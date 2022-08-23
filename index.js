@@ -35,6 +35,22 @@ async function run() {
             res.send(blog);
         })
 
+        // GET blogs from db of each user based on email
+        app.get('/profileBlogs', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const blogs = await allBlogsCollection.find(query).toArray();
+            res.send(blogs);
+        })
+
+        // DELETE blog from MyProfile
+        app.delete('/allblogs/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await allBlogsCollection.deleteOne(query);
+            res.send(result);
+        })
+
         // POST Blog in DB
         app.post('/blog', async (req, res) => {
             const blog = req.body;
